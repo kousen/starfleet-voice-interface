@@ -15,7 +15,7 @@ public class AudioPlayerService {
     private static final Logger log = LoggerFactory.getLogger(AudioPlayerService.class);
 
     public void playWorkingSound() {
-        playAudioFile("/sounds/working.mp3");
+        playAudioFile("/sounds/tos_working.mp3");
     }
 
     public void playAudioFile(String resourcePath) {
