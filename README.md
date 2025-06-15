@@ -1,80 +1,203 @@
 # Starfleet Voice Interface
 
-A JavaFX desktop application that provides a voice-controlled interface for system diagnostics, inspired by Star Trek's computer interface.
+A Star Trek-inspired voice-controlled computer interface built with JavaFX, Spring Boot, and OpenAI. Issue voice commands to query system diagnostics and receive real-time feedback in an authentic starship computer style.
+
+![Starfleet Voice Interface](docs/screenshot.png)
 
 ## Features
 
-- Voice command recording and transcription using OpenAI's Whisper model
-- Natural language processing of commands via OpenAI's GPT models
-- System diagnostics capabilities through osquery integration
-- Star Trek-inspired user interface
+- **Voice Recognition**: Powered by OpenAI Whisper for accurate speech transcription
+- **System Diagnostics**: Query system information via MCP (Model Context Protocol) client
+- **Audio Feedback**: Computer voice confirms command receipt
+- **Star Trek UI**: Authentic LCARS-inspired interface with "COMM" button
+- **Cross-Platform**: Runs on macOS, Windows, and Linux
 
 ## Prerequisites
 
 - Java 21 or higher
-- Gradle
 - OpenAI API key
-- OsqueryMcpServer (for system diagnostics)
+- MCP Server (for system queries)
 
 ## Setup
 
-1. Clone the repository
-2. Set your OpenAI API key as an environment variable:
-   ```
-   export OPENAI_API_KEY=your_api_key_here
-   ```
-3. Update the path to OsqueryMcpServer in `application.properties` if needed
-4. Build the project:
-   ```
-   ./gradlew build
-   ```
+### 1. Clone the Repository
 
-## Running the Application
-
-Use the custom Gradle task to run the application with JavaFX support:
-
+```bash
+git clone https://github.com/kousen/starfleet-voice-interface.git
+cd starfleet-voice-interface
 ```
+
+### 2. Configure OpenAI API
+
+Create an `application.properties` file in `src/main/resources/` or set environment variables:
+
+```properties
+spring.ai.openai.api-key=your-openai-api-key-here
+spring.ai.openai.audio.transcription.options.model=whisper-1
+spring.ai.openai.audio.transcription.options.language=en
+```
+
+Or set as environment variable:
+```bash
+export OPENAI_API_KEY=your-openai-api-key-here
+```
+
+### 3. MCP Server Setup
+
+The application connects to an external MCP server for system diagnostics. Update the MCP server path in `application.properties`:
+
+```properties
+spring.ai.mcp.client.stdio.connections.osquery.command=java
+spring.ai.mcp.client.stdio.connections.osquery.args=-jar,/path/to/your/OsqueryMcpServer.jar
+```
+
+### 4. Build and Run
+
+Using Gradle:
+```bash
 ./gradlew runFX
+```
+
+Or build and run manually:
+```bash
+./gradlew build
+java -jar build/libs/starfleet-voice-interface-0.0.1-SNAPSHOT.jar
 ```
 
 ## Usage
 
-1. Click and hold the comm badge button to start recording
-2. Speak your command clearly
-3. Release the button to process the command
-4. View the system's response in the text area
+1. **Launch the application** - The interface displays with a central "COMM" button
+2. **Press and hold the COMM button** - Begin speaking your command
+3. **Release the button** - Voice processing begins
+4. **Hear confirmation** - Computer plays "Working" sound
+5. **View results** - System diagnostic information appears in the response area
 
-Example commands:
-- "What is the system uptime?"
-- "Show me the top running processes"
-- "Display system information"
-- "List network connections"
+### Example Commands
 
-## Architecture
-
-The application uses:
-- Spring Boot for dependency injection and application configuration
-- JavaFX for the user interface
-- Spring AI for integration with OpenAI's models
-- Model Context Protocol (MCP) for tool integration
-- osquery for system diagnostics
+- "Computer, run a Level 1 diagnostic"
+- "Computer, what's the fan temperature?"
+- "Computer, show system status"
+- "Computer, check memory usage"
 
 ## Project Structure
 
-- `StarfleetVoiceInterfaceApplication.java`: Main application class and JavaFX UI setup
-- `VoiceController.java`: Handles UI interactions and coordinates services
-- `TranscriptionService.java`: Records audio and transcribes it using OpenAI
-- `McpClientService.java`: Processes commands using OpenAI and MCP tools
+```
+src/main/java/com/kousenit/starfleetvoiceinterface/
+├── StarfleetVoiceInterfaceApplication.java  # Main application class
+├── VoiceController.java                     # UI event handling and voice processing
+├── TranscriptionService.java                # OpenAI Whisper integration
+├── McpClientService.java                    # MCP client for system queries
+├── AudioPlayerService.java                  # Audio playback using jlayer
+└── config/
+    └── UIConstants.java                     # UI styling and configuration
 
-## Potential Improvements
+src/main/resources/
+├── application.properties                   # Configuration
+└── sounds/
+    └── working.mp3                         # Audio feedback file
+```
 
-- Add more robust error handling for network and API failures
-- Implement a command history feature
-- Add unit tests for the UI components
-- Create a configuration UI for API keys and settings
-- Support for additional voice commands and system diagnostics
-- Implement voice synthesis for spoken responses
+## Technologies Used
+
+- **Java 21** - Primary programming language
+- **JavaFX 21** - User interface framework
+- **Spring Boot 3.5** - Application framework
+- **Spring AI** - OpenAI integration
+- **OpenAI Whisper** - Speech-to-text transcription
+- **MCP (Model Context Protocol)** - System data queries
+- **jlayer** - MP3 audio playback
+- **Gradle** - Build system
+
+## Configuration Options
+
+### UI Customization
+
+Modify `UIConstants.java` to customize the interface:
+- Window dimensions
+- Colors and styling
+- Animation timing
+- Button sizes
+
+### Audio Options
+
+Replace `src/main/resources/sounds/working.mp3` with your preferred audio file:
+- Supports MP3 format via jlayer
+- Async playback prevents UI blocking
+- Graceful fallback if file is missing
+
+### Voice Recognition
+
+Adjust transcription settings in `application.properties`:
+```properties
+# Transcription model (whisper-1 recommended)
+spring.ai.openai.audio.transcription.options.model=whisper-1
+
+# Language setting
+spring.ai.openai.audio.transcription.options.language=en
+
+# Temperature (0.0 = deterministic, 1.0 = creative)
+spring.ai.openai.audio.transcription.options.temperature=0.0
+```
+
+## Development
+
+### Running in Development
+
+```bash
+./gradlew runFX
+```
+
+### Running Tests
+
+```bash
+./gradlew test
+```
+
+### Building Distribution
+
+```bash
+./gradlew build
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Troubleshooting
+
+### Common Issues
+
+**"Audio file not found"**
+- Ensure `working.mp3` exists in `src/main/resources/sounds/`
+- Check file permissions
+
+**"OpenAI API Error"**
+- Verify your API key is valid and has sufficient credits
+- Check network connectivity
+
+**"MCP Connection Failed"**
+- Ensure the MCP server is running and accessible
+- Verify the server path in `application.properties`
+
+**"Microphone not supported"**
+- Check system audio permissions
+- Ensure microphone is connected and functional
 
 ## License
 
-[MIT License](LICENSE)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Inspired by Star Trek's LCARS computer interface
+- Built with Spring AI and OpenAI technologies
+- Uses MCP for system integration
+- Audio processing via jlayer library
+
+---
+
+**Live long and prosper!** 🖖
