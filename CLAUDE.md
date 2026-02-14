@@ -69,8 +69,12 @@ spring.ai.openai.audio.transcription.options.temperature=0.0
 
 ### MCP Server Connection
 ```properties
-spring.ai.mcp.client.stdio.connections.osquery.command=java
-spring.ai.mcp.client.stdio.connections.osquery.args=-jar,/path/to/OsqueryMcpServer.jar
+# Native binary (recommended — instant ~36ms startup)
+spring.ai.mcp.client.stdio.connections.osquery.command=/path/to/OsqueryMcpServer/build/native/nativeCompile/OsqueryMcpServer
+
+# Or use the JAR (slower JVM startup)
+# spring.ai.mcp.client.stdio.connections.osquery.command=java
+# spring.ai.mcp.client.stdio.connections.osquery.args=-jar,/path/to/OsqueryMcpServer.jar
 ```
 
 ### Audio Files

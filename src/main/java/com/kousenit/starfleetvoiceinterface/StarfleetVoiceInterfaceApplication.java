@@ -90,7 +90,7 @@ public class StarfleetVoiceInterfaceApplication extends Application {
             // Wire up the controller
             voiceController.initialize(recordButton, statusLabel, transcriptLabel, responseArea);
 
-            // Create scene
+            // Create a scene
             Scene scene = new Scene(root, UIConstants.WINDOW_WIDTH, UIConstants.WINDOW_HEIGHT);
             scene.setFill(Color.web(UIConstants.BACKGROUND_COLOR));
 

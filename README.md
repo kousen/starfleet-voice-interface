@@ -47,8 +47,12 @@ export OPENAI_API_KEY=your-openai-api-key-here
 The application connects to an external MCP server for system diagnostics. Update the MCP server path in `application.properties`:
 
 ```properties
-spring.ai.mcp.client.stdio.connections.osquery.command=java
-spring.ai.mcp.client.stdio.connections.osquery.args=-jar,/path/to/your/OsqueryMcpServer.jar
+# Native binary (recommended — instant ~36ms startup)
+spring.ai.mcp.client.stdio.connections.osquery.command=/path/to/OsqueryMcpServer/build/native/nativeCompile/OsqueryMcpServer
+
+# Or use the JAR (slower JVM startup)
+# spring.ai.mcp.client.stdio.connections.osquery.command=java
+# spring.ai.mcp.client.stdio.connections.osquery.args=-jar,/path/to/OsqueryMcpServer/build/libs/OsqueryMcpServer-1.0.jar
 ```
 
 ### 4. Build and Run
