@@ -13,6 +13,7 @@ import javafx.util.Duration;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class VoiceController {
@@ -82,25 +83,42 @@ public class VoiceController {
             recordButton.setFill(Color.web(UIConstants.BUTTON_BACKGROUND_COLOR));
         });
 
-        CompletableFuture
-                .supplyAsync(transcriptionService::stopAndTranscribe)
-                .thenCompose(transcription -> {
+        CompletableFuture.supplyAsync(transcriptionService::stopAndTranscribe)
+                .thenAccept(transcription -> {
                     Platform.runLater(() -> {
                         transcriptLabel.setText("Command: \"" + transcription + "\"");
                         audioPlayerService.playWorkingSound();
+                        responseArea.setText("Thinking...\n");
                     });
-                    return mcpService.processCommand(transcription);
+
+                    var receivedContent = new AtomicBoolean(false);
+
+                    mcpService.processCommand(
+                            transcription,
+                            chunk -> Platform.runLater(() -> {
+                                if (receivedContent.compareAndSet(false, true)) {
+                                    responseArea.clear();
+                                }
+                                responseArea.appendText(chunk);
+                            }),
+                            toolName -> Platform.runLater(() ->
+                                    responseArea.appendText(">> Calling " + toolName + "...\n")),
+                            () -> Platform.runLater(() -> {
+                                statusLabel.setText("READY");
+                                statusLabel.setTextFill(Color.web(UIConstants.STATUS_READY_COLOR));
+                            }),
+                            error -> Platform.runLater(() -> {
+                                responseArea.setText("ERROR: " + error.getMessage());
+                                statusLabel.setText("ERROR");
+                                statusLabel.setTextFill(Color.web(UIConstants.STATUS_RECORDING_COLOR));
+                            })
+                    );
                 })
-                .thenAccept(response -> Platform.runLater(() -> {
-                    responseArea.setText(response);
-                    statusLabel.setText("READY");
-                    statusLabel.setTextFill(Color.web(UIConstants.STATUS_READY_COLOR));
-                }))
                 .exceptionally(throwable -> {
                     Platform.runLater(() -> {
                         responseArea.setText("ERROR: " + throwable.getMessage());
                         statusLabel.setText("ERROR");
-                        statusLabel.setTextFill(Color.web(UIConstants.STATUS_RECORDING_COLOR)); // Using recording color for errors
+                        statusLabel.setTextFill(Color.web(UIConstants.STATUS_RECORDING_COLOR));
                     });
                     return null;
                 });
