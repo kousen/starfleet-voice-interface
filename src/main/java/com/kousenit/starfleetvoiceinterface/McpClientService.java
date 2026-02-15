@@ -6,6 +6,7 @@ import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.definition.ToolDefinition;
 import org.springframework.ai.tool.metadata.ToolMetadata;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -56,17 +57,17 @@ public class McpClientService {
     private ToolCallback wrapWithNotification(ToolCallback delegate, Consumer<String> onToolCall) {
         return new ToolCallback() {
             @Override
-            public ToolDefinition getToolDefinition() {
+            public @NonNull ToolDefinition getToolDefinition() {
                 return delegate.getToolDefinition();
             }
 
             @Override
-            public ToolMetadata getToolMetadata() {
+            public @NonNull ToolMetadata getToolMetadata() {
                 return delegate.getToolMetadata();
             }
 
             @Override
-            public String call(String toolInput) {
+            public @NonNull String call(@NonNull String toolInput) {
                 onToolCall.accept(delegate.getToolDefinition().name());
                 return delegate.call(toolInput);
             }
