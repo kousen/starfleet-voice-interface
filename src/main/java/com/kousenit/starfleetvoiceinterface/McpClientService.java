@@ -45,9 +45,7 @@ public class McpClientService {
                         Format responses in a clear, conversational manner.
                         """)
                 .user(command)
-                .toolCallbacks(callbacks)
-                .stream()
-                .content()
+                .toolCallbacks(callbacks).stream().content()
                 .doOnNext(onChunk)
                 .doOnComplete(onComplete)
                 .doOnError(onError)
