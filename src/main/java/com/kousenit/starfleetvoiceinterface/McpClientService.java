@@ -10,6 +10,7 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 @Service
@@ -54,7 +55,7 @@ public class McpClientService {
                         Keep it brief and in-character — one or two sentences.
                         """)
                 .user(command)
-                .tools((Object[]) callbacks).stream().content()
+                .tools(List.of(callbacks)).stream().content()
                 .doOnNext(onChunk)
                 .doOnComplete(onComplete)
                 .doOnError(onError)
