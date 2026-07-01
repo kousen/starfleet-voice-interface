@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.5.0"
+    id("org.springframework.boot") version "4.0.0"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
@@ -19,7 +19,7 @@ javafx {
     modules = listOf("javafx.controls", "javafx.fxml", "javafx.media")
 }
 
-extra["springAiVersion"] = "1.0.0"
+extra["springAiVersion"] = "2.0.0"
 
 dependencyManagement {
     imports {
@@ -50,11 +50,6 @@ tasks.withType<Test> {
 
 tasks.register<JavaExec>("runFX") {
     group = "application"
-    mainClass.set("com.kousenit.starfleetvoiceinterface.StarfleetVoiceInterfaceApplication")
+    mainClass.set("com.kousenit.starfleetvoiceinterface.Launcher")
     classpath = sourceSets["main"].runtimeClasspath
-
-    jvmArgs = listOf(
-        "--module-path", classpath.asPath,
-        "--add-modules", "javafx.controls,javafx.fxml,javafx.media"
-    )
 }

@@ -105,8 +105,8 @@ src/main/resources/
 
 - **Java 21** - Primary programming language
 - **JavaFX 21** - User interface framework
-- **Spring Boot 3.5** - Application framework
-- **Spring AI** - OpenAI integration
+- **Spring Boot 4.0** - Application framework
+- **Spring AI 2.0** - OpenAI integration
 - **OpenAI Whisper** - Speech-to-text transcription
 - **MCP (Model Context Protocol)** - System data queries
 - **jlayer** - MP3 audio playback

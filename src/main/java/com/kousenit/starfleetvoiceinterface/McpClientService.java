@@ -6,7 +6,7 @@ import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.definition.ToolDefinition;
 import org.springframework.ai.tool.metadata.ToolMetadata;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -54,7 +54,7 @@ public class McpClientService {
                         Keep it brief and in-character — one or two sentences.
                         """)
                 .user(command)
-                .toolCallbacks(callbacks).stream().content()
+                .tools((Object[]) callbacks).stream().content()
                 .doOnNext(onChunk)
                 .doOnComplete(onComplete)
                 .doOnError(onError)

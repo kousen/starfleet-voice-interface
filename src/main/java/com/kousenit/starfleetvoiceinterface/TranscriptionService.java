@@ -6,7 +6,7 @@ import org.springframework.ai.audio.transcription.AudioTranscriptionPrompt;
 import org.springframework.ai.audio.transcription.AudioTranscriptionResponse;
 import org.springframework.ai.openai.OpenAiAudioTranscriptionModel;
 import org.springframework.ai.openai.OpenAiAudioTranscriptionOptions;
-import org.springframework.ai.openai.api.OpenAiAudioApi;
+import com.openai.models.audio.AudioResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -128,7 +128,7 @@ public class TranscriptionService {
                     OpenAiAudioTranscriptionOptions.builder()
                             .language("en")
                             .temperature(0.0f)
-                            .responseFormat(OpenAiAudioApi.TranscriptResponseFormat.TEXT)
+                            .responseFormat(AudioResponseFormat.TEXT)
                             .build()
             );
 

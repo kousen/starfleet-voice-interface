@@ -90,10 +90,9 @@ class McpConnectionTest {
         McpSyncClient client = mcpClients.getFirst();
 
         var result = client.callTool(
-                new McpSchema.CallToolRequest(
-                        "executeOsquery",
-                        Map.of("sql", "SELECT days, hours, minutes FROM uptime")
-                )
+                McpSchema.CallToolRequest.builder("executeOsquery")
+                        .arguments(Map.of("sql", "SELECT days, hours, minutes FROM uptime"))
+                        .build()
         );
 
         assertThat(result.content())
@@ -114,7 +113,7 @@ class McpConnectionTest {
                         For uptime, use this query: SELECT * FROM system_info
                         """)
                 .user("What is the system uptime?")
-                .toolCallbacks(toolCallbackProvider.getToolCallbacks())
+                .tools((Object[]) toolCallbackProvider.getToolCallbacks())
                 .call()
                 .content();
 

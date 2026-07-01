@@ -8,7 +8,7 @@ This file contains information to help Claude Code understand this project and p
 
 ### Architecture
 - **Frontend**: JavaFX 21 with LCARS-inspired UI
-- **Backend**: Spring Boot 3.5 with Spring AI
+- **Backend**: Spring Boot 4.0 with Spring AI 2.0
 - **Voice Recognition**: OpenAI Whisper API
 - **System Queries**: MCP (Model Context Protocol) client
 - **Audio Playback**: jlayer for MP3 files
@@ -41,6 +41,14 @@ This file contains information to help Claude Code understand this project and p
 - jlayer for MP3 playback
 
 ## Recent Changes
+
+### Spring Boot 4 / Spring AI 2.0 Migration
+- **Versions**: Spring Boot `3.5.0 → 4.0.0`, Spring AI `1.0.0 → 2.0.0` (2.0 requires Boot 4 — no Boot 3.x path)
+- **OpenAI audio API**: Spring AI 2.0 rebuilt OpenAI support on the official OpenAI Java SDK. `org.springframework.ai.openai.api.OpenAiAudioApi` was removed; `TranscriptionService` now uses `com.openai.models.audio.AudioResponseFormat.TEXT`
+- **Null-safety**: Spring Framework 7 uses JSpecify. `org.springframework.lang.NonNull → org.jspecify.annotations.NonNull` in `McpClientService`
+- **Tool calling**: composable API — `.toolCallbacks(...) → .tools(...)` on `ChatClient`
+- **MCP SDK 2.0**: `new CallToolRequest(name, map)` → `CallToolRequest.builder(name).arguments(map).build()`; jar split `mcp → mcp-core`
+- **Untouched**: `javax.sound.sampled.*` is JDK audio, not Jakarta EE — unaffected by the namespace migration
 
 ### Audio System Evolution
 1. **Started with**: macOS-only `say` command (Zarvox voice)
