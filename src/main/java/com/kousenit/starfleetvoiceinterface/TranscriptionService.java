@@ -7,7 +7,6 @@ import org.springframework.ai.audio.transcription.AudioTranscriptionResponse;
 import org.springframework.ai.openai.OpenAiAudioTranscriptionModel;
 import org.springframework.ai.openai.OpenAiAudioTranscriptionOptions;
 import com.openai.models.audio.AudioResponseFormat;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class TranscriptionService {
 
     private TargetDataLine microphone;
     private ByteArrayOutputStream audioBuffer;
-    private boolean isRecording = false;
+    private volatile boolean isRecording = false;
     private Thread recordingThread;
     private final OpenAiAudioTranscriptionModel transcriptionModel;
 
@@ -37,7 +36,7 @@ public class TranscriptionService {
             false      // Big endian
     );
 
-    public TranscriptionService(@Autowired OpenAiAudioTranscriptionModel transcriptionModel) {
+    public TranscriptionService(OpenAiAudioTranscriptionModel transcriptionModel) {
         // Initialize the audio format
         log.info("TranscriptionService initialized with audio format: {}", audioFormat);
         this.transcriptionModel = transcriptionModel;

@@ -43,17 +43,17 @@ This file contains information to help Claude Code understand this project and p
 ## Recent Changes
 
 ### Spring Boot 4 / Spring AI 2.0 Migration
-- **Versions**: Spring Boot `3.5.0 → 4.0.0`, Spring AI `1.0.0 → 2.0.0` (2.0 requires Boot 4 — no Boot 3.x path)
+- **Versions**: Spring Boot `3.5.0 → 4.0.9`, Spring AI `1.0.0 → 2.0.2` (2.0 requires Boot 4 — no Boot 3.x path)
 - **OpenAI audio API**: Spring AI 2.0 rebuilt OpenAI support on the official OpenAI Java SDK. `org.springframework.ai.openai.api.OpenAiAudioApi` was removed; `TranscriptionService` now uses `com.openai.models.audio.AudioResponseFormat.TEXT`
 - **Null-safety**: Spring Framework 7 uses JSpecify. `org.springframework.lang.NonNull → org.jspecify.annotations.NonNull` in `McpClientService`
-- **Tool calling**: composable API — `.toolCallbacks(...) → .tools(...)` on `ChatClient`
+- **Tool calling**: `.tools(...)` on `ChatClient` is heterogeneous — accepts `ToolCallback`, `ToolCallbackProvider`, `@Tool` POJOs, and arrays/collections of them (the `tools(Consumer<ToolSpec>)` form was removed; `.toolCallbacks(...)` still exists)
 - **MCP SDK 2.0**: `new CallToolRequest(name, map)` → `CallToolRequest.builder(name).arguments(map).build()`; jar split `mcp → mcp-core`
 - **Untouched**: `javax.sound.sampled.*` is JDK audio, not Jakarta EE — unaffected by the namespace migration
 
 ### Audio System Evolution
 1. **Started with**: macOS-only `say` command (Zarvox voice)
 2. **Moved to**: Cross-platform `AudioPlayerService` with jlayer
-3. **Current**: Plays `src/main/resources/sounds/working.mp3` after voice transcription
+3. **Current**: Plays `src/main/resources/sounds/tos_working.mp3` after voice transcription
 
 ### UI Issue Fixed
 - **Problem**: Transcription text wrapping caused closing quotes to appear on new line

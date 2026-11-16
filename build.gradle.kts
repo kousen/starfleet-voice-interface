@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "4.0.0"
+    id("org.springframework.boot") version "4.0.9"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
@@ -19,7 +19,7 @@ javafx {
     modules = listOf("javafx.controls", "javafx.fxml", "javafx.media")
 }
 
-extra["springAiVersion"] = "2.0.0"
+extra["springAiVersion"] = "2.0.2"
 
 dependencyManagement {
     imports {

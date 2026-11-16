@@ -14,7 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -27,7 +26,6 @@ public class StarfleetVoiceInterfaceApplication extends Application {
     public static void main(String[] args) {
         // Initialize Spring Boot context first, before JavaFX
         SpringApplicationBuilder builder = new SpringApplicationBuilder(StarfleetVoiceInterfaceApplication.class);
-        builder.web(WebApplicationType.NONE);
         builder.headless(false); // Important for JavaFX
         context = builder.run();
         

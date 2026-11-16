@@ -65,7 +65,7 @@ class McpConnectionTest {
         // Check for osquery tool specifically
         assertThat(tools)
                 .extracting(toolCallback -> toolCallback.getToolDefinition().name())
-                .contains("spring_ai_mcp_client_osquery_executeOsquery");
+                .contains("executeOsquery");
     }
 
     @Test
@@ -109,11 +109,11 @@ class McpConnectionTest {
         String response = chatClient.prompt()
                 .system("""
                         You are a system diagnostic assistant.
-                        Use the spring_ai_mcp_client_osquery_executeOsquery tool to answer questions.
+                        Use the executeOsquery tool to answer questions.
                         For uptime, use this query: SELECT * FROM system_info
                         """)
                 .user("What is the system uptime?")
-                .tools((Object[]) toolCallbackProvider.getToolCallbacks())
+                .tools(toolCallbackProvider)
                 .call()
                 .content();
 
